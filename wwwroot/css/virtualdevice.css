@@ -1,0 +1,21 @@
+body{
+    margin:0;
+    border:0;
+    padding:0;
+    background-color: orange;
+}
+#content-wrapper{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+#main-map{
+    width: 250px; 
+    height: 250px;
+    background-color:blue;
+}
+#main-console{
+    width: 250px;
+    height: 250px;
+    background-color: green;
+}
