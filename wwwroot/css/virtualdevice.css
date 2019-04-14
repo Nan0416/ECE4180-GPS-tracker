@@ -2,20 +2,28 @@ body{
     margin:0;
     border:0;
     padding:0;
-    background-color: orange;
+    background-color: white;
 }
 #content-wrapper{
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
 }
+.content{
+    width:100%;
+}
 #main-map{
-    width: 250px; 
-    height: 250px;
-    background-color:blue;
+    height: 700px;
+    background-color:white;
+    border:1px gray solid;
+}
+#control-panel{
+    height: 50px;
+    background-color: white;
 }
 #main-console{
-    width: 250px;
-    height: 250px;
-    background-color: green;
+    height: 800px;
+    background-color: white;
+    overflow: scroll;
+    border:1px black solid;
 }

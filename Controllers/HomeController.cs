@@ -8,8 +8,9 @@ namespace ece4180.gpstracker.controllers{
         public IActionResult Index(){
             return View();
         }
-        public void StartNewTrip(int deviceID){
+        public string StartNewTrip(int deviceID){
             // create a new running trip
+            return "19";
         }
         public void EndTrip(int tripId){
             
