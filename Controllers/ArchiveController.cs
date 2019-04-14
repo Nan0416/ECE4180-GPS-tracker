@@ -1,12 +1,14 @@
 using Microsoft.AspNetCore.Mvc;
 
 namespace ece4180.gpstracker.controllers{
+    [Route("Archive")]
     public class ArchiveController: Controller{
         public ArchiveController(){
 
         }
-        public void DownloadTrip(int tripId){
-            
+        [Route("DownloadTrip/{tripId}")]
+        public string DownloadTrip(int tripId){
+            return "OK";
         }
     } 
 }

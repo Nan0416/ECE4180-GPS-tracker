@@ -55,16 +55,35 @@ function start(){
             timestamp = position.timestamp;
             // redraw
             redraw();
-            append();
+            if(recording == 1){
+                append();
+                $.get( `realtime/uploadposition/${tripId}/${location__[0]}/${location__[1]}`, ()=>{
+                    
+                });
+            }
+            
         })
     }, 1000);
 }
 $('#control-button').click(()=>{
-    $.get( `home/startnewtrip/${deviceId}`, function( data ) {
-        tripId = data;
-        $("#control-status").attr('background-color', 'green');
-        $('#control-status').text(`tripId: ${data}`);
-    });
+    if(recording == 0){
+        $.get( `home/startnewtrip/${deviceId}`, function( data ) {
+            tripId = data;
+            $("#control-status").css('background-color', 'green');
+            $('#control-status').text(`tripId: ${data}`);
+            $('#control-button').text('Terminate');
+            recording = 1;
+        });
+    }else{
+        $.get( `home/endtrip/${tripId}`, function( data ) {
+            if(data == "OK"){
+                $("#control-status").css('background-color', 'red');
+                $('#control-status').text(`${data}`);
+                $('#control-button').text('Start')
+                recording = 0;
+            }
+        });
+    }
 })
 
 $(document).ready(function(){

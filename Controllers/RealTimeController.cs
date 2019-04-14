@@ -1,14 +1,16 @@
 
 using Microsoft.AspNetCore.Mvc;
 namespace ece4180.gpstracker.controllers{
+    [Route("RealTime")]
     public class RealTimeController: Controller{
         // a restful api, how to return json
-        public void UploadPosition(int tripId, double lat_, double long_){
-
+        [HttpGet("UploadPosition/{tripId}/{lat_}/{long_}")]
+        public string UploadPosition(int id, double lat_, double long_){
+            return "OK";
         }
-        
-        public void DownloadTrip(int tripId){
-
+        [HttpGet("DownloadTrip/{tripId}")]
+        public string DownloadTrip(int tripId){
+            return "OK";
         }
     }
 
