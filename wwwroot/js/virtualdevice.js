@@ -46,7 +46,7 @@ function redraw(){
         .attr('cy', d=>{return myMap.latLngToLayerPoint(d.location).y; });
 }
 function append(){
-    $("#main-console").append(`<p>${timestamp} ${location__[0]} ${location__[1]}</p>`);
+    $("#main-console-list").append(`<li>${timestamp} ${location__[0]} ${location__[1]}</li>`);
 }
 function start(){
     setInterval(()=>{

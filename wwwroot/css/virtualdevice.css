@@ -18,12 +18,41 @@ body{
     border:1px gray solid;
 }
 #control-panel{
-    height: 50px;
+    position: relative;
     background-color: white;
+    font-size: 0;
+    height: 30px;
 }
 #main-console{
     height: 800px;
     background-color: white;
     overflow: scroll;
     border:1px black solid;
+}
+.content-item{
+    display: inline-block;
+    width: 100px; 
+    height: 30px;
+    box-sizing: border-box;
+    border: 1px black solid;
+    border-radius: 3px;
+    font-size: 15px;
+    outline: 0;
+    padding: 0;
+    margin: 0;
+    vertical-align: top;
+    position: absolute;
+}
+#control-button{
+    background-color:white;
+    left: 60px;
+}
+#control-status{
+    background-color: red;
+    text-align: center;
+    line-height: 28px;
+    right:60px;
+}
+ol li{
+    font-size: 14px;
 }
