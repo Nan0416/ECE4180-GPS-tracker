@@ -57,7 +57,7 @@ function start(){
             redraw();
             if(recording == 1){
                 append();
-                $.get( `realtime/uploadposition/${tripId}/${location__[0]}/${location__[1]}`, ()=>{
+                $.get(`realtime/uploadposition/${tripId}/${location__[0]}/${location__[1]}`, ()=>{
                     
                 });
             }
