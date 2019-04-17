@@ -34,7 +34,7 @@ namespace web_code
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
-
+            services.AddScoped<TripAccessor>();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
             string connection = "Data Source=trips.db";
             services.AddDbContext<TripContext>

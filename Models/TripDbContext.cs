@@ -4,13 +4,13 @@ using System.Collections.Generic;
 namespace ece4180.gpstracker.Models{
     public class TripContext : DbContext
     {
-        public TripContext(){
+        /* public TripContext(){
 
         }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseSqlite("Data Source=trips.db");
-        }
+        }*/
         public TripContext(DbContextOptions<TripContext> options)
             : base(options)
         { }

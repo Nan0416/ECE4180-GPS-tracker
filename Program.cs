@@ -12,7 +12,7 @@ namespace web_code
 {
     public class Program
     {
-        public static void __Main(string[] args)
+        public static void Main(string[] args)
         {
             CreateWebHostBuilder(args).Build().Run();
         }

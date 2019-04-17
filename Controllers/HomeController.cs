@@ -3,12 +3,13 @@ using Microsoft.AspNetCore.Mvc;
 using ece4180.gpstracker.Models;
 using System.Collections.Generic;
 using System;
+using System.Threading.Tasks;
 namespace ece4180.gpstracker.controllers{
     [Route("Home")]
     public class HomeController: Controller{
-        private readonly TripContext tripcontext_;
-        public HomeController(TripContext tc){
-            tripcontext_ = tc;
+        private readonly TripAccessor tripaccessor_;
+        public HomeController(TripAccessor ta){
+            tripaccessor_ = ta;
         }
         [Route("")]
         [Route("/")]
@@ -16,14 +17,12 @@ namespace ece4180.gpstracker.controllers{
         public IActionResult Index(){
             return View();
         }
-        [Route("StartNewTrip/{deviceId}")]
-        public string StartNewTrip(int deviceID){
+        [Route("StartNewTrip/{deviceID:int}")]
+        public async Task<string> StartNewTrip(int deviceID){
+            // Console.WriteLine("====> DeviceId:" + deviceID);
             // create a new running trip
-            int id = 19;
-            long startTime = (long)DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1)).TotalMilliseconds;
-            Trip trip = new Trip{tripId = id, status = 1, startTime = startTime};
-            tripcontext_.Trips.Add(trip);
-            tripcontext_.SaveChanges();
+            int id = await tripaccessor_.CreateTrip(deviceID);
+            //int id = await tripaccessor_.NumberOfTrips();
             return id.ToString();
         }
         [Route("EndTrip/{tripId}")]
