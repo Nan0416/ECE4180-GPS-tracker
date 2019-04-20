@@ -12,17 +12,8 @@ body{
 .content{
     width:100%;
 }
-#main-map{
-    height: 700px;
-    background-color:white;
-    border:1px gray solid;
-}
-#control-panel{
-    position: relative;
-    background-color: white;
-    font-size: 0;
-    height: 30px;
-}
+
+
 #main-console{
     height: 800px;
     background-color: white;
@@ -43,10 +34,7 @@ body{
     vertical-align: top;
     position: absolute;
 }
-#control-button{
-    background-color:white;
-    left: 60px;
-}
+
 #control-status{
     background-color: red;
     text-align: center;

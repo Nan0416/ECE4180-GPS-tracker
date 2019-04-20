@@ -6,6 +6,25 @@
     <title>ECE4180 GPS Tracker Virtual Device</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.3.4/dist/leaflet.css" />
     <link rel="stylesheet" href="~/css/virtualdevice.css">
+    <style>
+        #main-map{
+            height: 300px;
+            background-color:white;
+            border:1px gray solid;
+        }
+        #control-panel{
+            position: relative;
+            background-color: white;
+            font-size: 0;
+            height: 30px;
+            padding: 20px 0px;
+        }
+        #control-button{
+            background-color:white;
+            left: 60px;
+            cursor: pointer;
+        }
+    </style>
 </head>
 <body>
     
@@ -14,7 +33,7 @@
         </div>
         <div id="control-panel" class="content">
             <button id="control-button" class="content-item">Start</button>
-            <span id="control-status" class="content-item"></span>
+            <span id="control-status" class="content-item">Status</span>
         </div>
         <div id="main-console" class="content">
             <ol id="main-console-list"></ol>

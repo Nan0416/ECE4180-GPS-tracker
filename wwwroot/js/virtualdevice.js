@@ -67,22 +67,29 @@ function start(){
 }
 $('#control-button').click(()=>{
     if(recording == 0){
-        $.get( `home/startnewtrip/${deviceId}`, function( data ) {
+        jqXRH = $.get(`home/startnewtrip/${deviceId}`);
+        jqXRH.done((data)=>{
+            console.log(data);
             tripId = data;
             $("#control-status").css('background-color', 'green');
             $('#control-status').text(`tripId: ${data}`);
             $('#control-button').text('Terminate');
             recording = 1;
+        }).fail((_, status, data) =>{
+            alert((status, data))
         });
+    }else if(recording == 1){
+        jqXRH = $.get(`home/endtrip/${tripId}`);
+        jqXRH.done(( data ) => {
+            $("#control-status").css('background-color', 'red');
+            $('#control-status').text("status");
+            $('#control-button').text('Start')
+            recording = 0;  
+        }).fail((_, status, data)=>{
+            alert((status, data))
+        })
     }else{
-        $.get( `home/endtrip/${tripId}`, function( data ) {
-            if(data == "OK"){
-                $("#control-status").css('background-color', 'red');
-                $('#control-status').text(`${data}`);
-                $('#control-button').text('Start')
-                recording = 0;
-            }
-        });
+        alert("Unexpected recording " + recording);
     }
 })
 
