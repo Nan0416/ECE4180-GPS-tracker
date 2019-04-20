@@ -13,22 +13,25 @@ namespace ece4180.gpstracker.controllers{
             tripaccessor_ = ta;
         }
         // a restful api, how to return json
-        [HttpGet("UploadPosition/{tripId:int}/{lat_:double}/{long_:double}")]
-        public async Task<string> UploadPosition(int tripId, double lat_, double long_){
+        [HttpGet("UploadPosition/{tripId:int}/{lat_v:double}/{long_v:double}")]
+        [HttpPost("UploadPosition")]
+        public async Task<string> UploadPosition(int tripId, double lat_v, double long_v){
             // Console.WriteLine($"time: {tripId}, lat: {lat_}, long: {long_}");
-            int result = await tripaccessor_.AddLocation(tripId, lat_, long_);
+            int result = await tripaccessor_.AddLocation(tripId, lat_v, long_v);
+            if(result == -1){
+                HttpContext.Response.StatusCode = 400;
+            }
             return result.ToString();
         }
-        /* [Route("DownloadTrip/{tripId}")]
-        public async Task<string> DownloadTrip(int tripId, long since){
-            List<Location> locs = await tripaccessor_.GetTripLocations(tripId);
-            string result = "";
-            if(locs == null) {return "Invalid"; }
-            foreach(Location loc in locs){
-                result += $"{loc.timeStamp} {loc.lat_} {loc.long_}\n";
+        [HttpGet("DownloadTrip/{tripId:int}/{since:long}")]
+        public async Task<JsonResult> DownloadTrip(int tripId, long since){
+            List<Location> locs = await tripaccessor_.GetTripLocations(tripId, TRIPSTATUS.RUNNING);
+            if(locs == null) {
+                HttpContext.Response.StatusCode = 404;
+                return Json(new ErrorJSONResult("Not found")); 
             }
-            return result;
-        }*/
+            return Json(locs);
+        }
     }
 
 }

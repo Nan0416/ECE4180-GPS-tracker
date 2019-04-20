@@ -17,31 +17,46 @@ namespace ece4180.gpstracker.controllers{
         public IActionResult Index(){
             return View();
         }
-        [Route("StartNewTrip/{deviceID:int}")]
+        [HttpGet("StartNewTrip/{deviceID:int}")]
         public async Task<string> StartNewTrip(int deviceID){
             // Console.WriteLine("====> DeviceId:" + deviceID);
             // create a new running trip
             int id = await tripaccessor_.CreateTrip(deviceID);
+            if(id == -1){
+                HttpContext.Response.StatusCode = 503;
+            }
             //int id = await tripaccessor_.NumberOfTrips();
             return id.ToString();
         }
-        [Route("EndTrip/{tripId}")]
-        public string EndTrip(int tripId){
-            return "OK";
+        [HttpGet("EndTrip/{tripId}")]
+        public async Task<string> EndTrip(int tripId){
+            int id = await tripaccessor_.TerminateTrip(tripId);
+            if(id == -1){
+                HttpContext.Response.StatusCode = 400;
+            }
+            return id.ToString();
         }
-        private bool ChangeStatus(int tripId, int status){
-            return false;
-            // status =1 terminated
+        
+        [HttpGet("TripStatus/{tripId:int=-1}")]
+        public async Task<JsonResult> TripStatus(int tripId){
+
+            if(tripId != -1){
+                Trip t = await tripaccessor_.GetTripStatus(tripId);
+                if(t == null){
+                    HttpContext.Response.StatusCode = 404;
+                    Console.WriteLine("Not found");
+                    return Json(new ErrorJSONResult("Not found"));
+                }
+                return Json(t);
+            }else{
+                List<Trip> trips = await tripaccessor_.GetTripStatus();
+                if(trips == null || trips.Count == 0){
+                    HttpContext.Response.StatusCode = 404;
+                    return Json(new ErrorJSONResult("Not found"));
+                }
+                return Json(trips);
+            }
         }
-        [Route("GetStauts/{tripId}")]
-        public string GetStatus(int tripId){
-            return "inprogress";
-        }
-        [Route("GetStatus")]
-        public string GetStatus(){
-            //List<Trip> trip = tripcontext_.Trips.();
-            //return ModelPrinter.Print()
-            return "";
-        }
+        
     }
 }
