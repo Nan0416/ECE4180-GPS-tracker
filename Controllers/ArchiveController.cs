@@ -11,17 +11,13 @@ namespace ece4180.gpstracker.controllers{
         public ArchiveController(TripAccessor ta){
             tripaccessor_ = ta;
         }
-        [HttpGet("DownloadTrip/{tripId}")]
+        [HttpGet("Trip/{tripId}")]
         public async Task<JsonResult> DownloadTrip(int tripId){
             Console.WriteLine("Archive");
-            List<Location> locs = await tripaccessor_.GetTripLocations(tripId, TRIPSTATUS.TERMINATED);
+            List<Location> locs = await tripaccessor_.GetTripLocations(tripId, TRIPSTATUS.TERMINATED, -1);
             if(locs == null){
                 HttpContext.Response.StatusCode = 404;
                 return Json(null);
-            }
-            string result = "";
-            foreach(Location loc in locs){
-                result += $"{loc.timeStamp} {loc.lat_} {loc.long_}\n";
             }
             return Json(locs);
         }

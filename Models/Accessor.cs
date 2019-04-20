@@ -23,18 +23,27 @@ namespace ece4180.gpstracker.Models{
         public TripAccessor(TripContext tc){
             tc_ = tc;
         }
-        private async Task<int> NumberOfTrips(){
-            Task<List<Trip>> trips = tc_.Trips.ToListAsync();
-            int i = await trips.ContinueWith((trips_) => trips_.Result.Count);
-            return i;
+        private async Task<int> GetNextTripId(){
+            List<Trip> trips = await tc_.Trips.OrderBy(t_ => t_.tripId).ToListAsync();
+            int count = 1;
+            foreach(Trip t in trips){
+                if(t.tripId != count){
+                    break;
+                }
+                count++;
+                if(count == Int32.MaxValue){
+                    return -1;
+                }
+            }
+            return count;
         }
         public async Task<List<Trip>> GetTripStatus(){
-            return await tc_.Trips.ToListAsync();
+            return await tc_.Trips.OrderBy(t_ => t_.startTime).ToListAsync();
         }
         public async Task<Trip> GetTripStatus(int tripId){
             return await tc_.Trips.Where(t_ => t_.tripId == tripId).FirstOrDefaultAsync();
         }
-        public async Task<List<Location>> GetTripLocations(int tripId, int status){
+        public async Task<List<Location>> GetTripLocations(int tripId, int status, long since){
             Trip t = null;
             if(status == TRIPSTATUS.ALL){
                 t = await tc_.Trips.Where(t_ => t_.tripId == tripId)
@@ -48,36 +57,33 @@ namespace ece4180.gpstracker.Models{
                 Console.WriteLine($"Cannot find the trip {tripId} with status {status}");
                 return null;
             }
-            return await tc_.Locations
-                .Where(loc => loc.tripId == tripId)
-                .OrderBy(loc => loc.timeStamp)
-                .ToListAsync();
+            if(since == -1){
+                return await tc_.Locations
+                    .Where(loc => loc.tripId == tripId)    
+                    .OrderBy(loc => loc.timeStamp)
+                    .ToListAsync();
+            }else{
+                return await tc_.Locations
+                    .Where(loc => loc.tripId == tripId)
+                    .Where(loc => loc.timeStamp >= since)
+                    .OrderBy(loc => loc.timeStamp)
+                    .ToListAsync();
+            }
         }
         public async Task<int> CreateTrip(int devicenum){
-            int i = await NumberOfTrips();
-            if ( i >= 0x7fffffff){
+            int tripId = await GetNextTripId();
+            if(tripId == -1){
                 return -1;
             }
-            int counter__ = 1;
-            do{
-                Trip trip = new Trip { 
-                        tripId = i + counter__,  
-                        devicenum = devicenum,
-                        status = 1,
-                        startTime = new DateTimeOffset(DateTime.UtcNow).ToUnixTimeMilliseconds()
-                    };
-                try{
-                    await tc_.Trips.AddAsync(trip);
-                    await tc_.SaveChangesAsync();
-                    break;
-                }catch(InvalidOperationException){
-                    counter__ ++;
-                    if(counter__ > 5){
-                        return -1;
-                    }
-                }
-            }while(true);
-            return i + counter__;
+            Trip trip = new Trip { 
+                tripId = tripId,  
+                devicenum = devicenum,
+                status = 1,
+                startTime = new DateTimeOffset(DateTime.UtcNow).ToUnixTimeMilliseconds()
+            };
+            tc_.Trips.Add(trip);
+            await tc_.SaveChangesAsync();
+            return tripId;
         }
         /*Add location to the database along with its tripId 
         * Error Case
@@ -127,6 +133,28 @@ namespace ece4180.gpstracker.Models{
             tc_.Trips.Update(trip);
             await tc_.SaveChangesAsync();
             return 0;
+        }
+        /*Delete a trip along with its locations */
+        public async Task<int> DeleteTrip(int tripId){
+            if(tripId == -1){
+                // delete all
+                List<Trip> trips = await tc_.Trips.ToListAsync();
+                List<Location> locs = await tc_.Locations.ToListAsync();
+                tc_.Trips.RemoveRange(trips);
+                tc_.Locations.RemoveRange(locs);
+                await tc_.SaveChangesAsync();
+                return 0;
+            }else{
+                Trip t = await tc_.Trips.Where(t_ => t_.tripId == tripId).FirstOrDefaultAsync();
+                if(t == null){
+                    return 0;
+                }
+                tc_.Trips.Remove(t);
+                List<Location> locs = await tc_.Locations.Where(loc => loc.tripId == tripId).ToListAsync();
+                tc_.Locations.RemoveRange(locs);
+                await tc_.SaveChangesAsync();
+                return 0;
+            }
         }
     }
 }

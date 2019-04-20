@@ -57,6 +57,14 @@ namespace ece4180.gpstracker.controllers{
                 return Json(trips);
             }
         }
-        
+        [HttpDelete("Trip/{tripId:int=-1}")]
+        public async Task<JsonResult> Trip(int tripId){
+            int result = await tripaccessor_.DeleteTrip(tripId);
+            if(result != 0){
+                HttpContext.Response.StatusCode = 503;
+                return Json(new ErrorJSONResult("Unexpected Error."));
+            }
+            return Json(null);
+        }
     }
 }

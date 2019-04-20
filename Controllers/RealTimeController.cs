@@ -23,9 +23,9 @@ namespace ece4180.gpstracker.controllers{
             }
             return result.ToString();
         }
-        [HttpGet("DownloadTrip/{tripId:int}/{since:long}")]
-        public async Task<JsonResult> DownloadTrip(int tripId, long since){
-            List<Location> locs = await tripaccessor_.GetTripLocations(tripId, TRIPSTATUS.RUNNING);
+        [HttpGet("Trip/{tripId:int}/{since:long=-1}")]
+        public async Task<JsonResult> Trip(int tripId, long since){
+            List<Location> locs = await tripaccessor_.GetTripLocations(tripId, TRIPSTATUS.RUNNING, since);
             if(locs == null) {
                 HttpContext.Response.StatusCode = 404;
                 return Json(new ErrorJSONResult("Not found")); 
