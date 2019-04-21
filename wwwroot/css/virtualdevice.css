@@ -1,0 +1,47 @@
+body{
+    margin:0;
+    border:0;
+    padding:0;
+    background-color: white;
+}
+#content-wrapper{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+.content{
+    width:100%;
+}
+
+
+#main-console{
+    height: 800px;
+    background-color: white;
+    overflow: scroll;
+    border:1px black solid;
+}
+.content-item{
+    display: inline-block;
+    width: 100px; 
+    height: 30px;
+    box-sizing: border-box;
+    border: 1px black solid;
+    border-radius: 3px;
+    font-size: 15px;
+    outline: 0;
+    padding: 0;
+    margin: 0;
+    vertical-align: top;
+    position: absolute;
+}
+
+#control-status{
+    background-color: red;
+    text-align: center;
+    line-height: 28px;
+    right:60px;
+}
+ol li{
+    font-size: 14px;
+    padding-left: 10px;
+}

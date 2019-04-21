@@ -10,6 +10,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
+using ece4180.gpstracker.Models;
+using Microsoft.EntityFrameworkCore;
+
 namespace web_code
 {
     public class Startup
@@ -31,8 +34,11 @@ namespace web_code
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
-
+            services.AddScoped<TripAccessor>();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            string connection = "Data Source=trips.db";
+            services.AddDbContext<TripContext>
+                    (options => options.UseSqlite(connection));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -48,12 +54,12 @@ namespace web_code
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
-
+            
             //app.UseHttpsRedirection();
             app.UseStaticFiles();
             //app.UseCookiePolicy();
 
-            app.UseMvcWithDefaultRoute();
+            app.UseMvc();
         }
     }
 }

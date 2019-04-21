@@ -1,0 +1,49 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <title>ECE4180 GPS Tracker Virtual Device</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.3.4/dist/leaflet.css" />
+    <link rel="stylesheet" href="~/css/virtualdevice.css">
+    <style>
+        #main-map{
+            height: 300px;
+            background-color:white;
+            border:1px gray solid;
+        }
+        #control-panel{
+            position: relative;
+            background-color: white;
+            font-size: 0;
+            height: 30px;
+            padding: 20px 0px;
+        }
+        #control-button{
+            background-color:white;
+            left: 60px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    
+    <div id="content-wrapper" style="width: 100%; height:auto">
+        <div id="main-map" class="content">      
+        </div>
+        <div id="control-panel" class="content">
+            <button id="control-button" class="content-item">Start</button>
+            <span id="control-status" class="content-item">Status</span>
+        </div>
+        <div id="main-console" class="content">
+            <ol id="main-console-list"></ol>
+        </div>
+    </div>
+</body>
+<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js"></script>
+<script src="https://unpkg.com/leaflet@1.3.4/dist/leaflet.js"></script>
+<script src="https://d3js.org/d3.v4.min.js"></script>
+<script src="~/js/virtualdevice.js"></script>
+
+</html>
